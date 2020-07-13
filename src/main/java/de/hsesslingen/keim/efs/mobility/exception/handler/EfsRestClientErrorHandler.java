@@ -40,61 +40,54 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.hsesslingen.keim.efs.mobility.exception.EfsError;
-import de.hsesslingen.keim.efs.mobility.exception.HttpClientException;
-import de.hsesslingen.keim.efs.mobility.exception.HttpServerException;
+import de.hsesslingen.keim.efs.mobility.exception.HttpException;
 
 /**
- * Implementation of {@link ResponseErrorHandler} that is responsible 
- * for handling response errors during a rest call. To make use of EfsRestClientErrorHandler
- * set it as error-handler for your {@link RestTemplate}
- * @author k.sivarasah
- * 1 Oct 2019
+ * Implementation of {@link ResponseErrorHandler} that is responsible for
+ * handling response errors during a rest call. To make use of
+ * EfsRestClientErrorHandler set it as error-handler for your
+ * {@link RestTemplate}
+ *
+ * @author k.sivarasah 1 Oct 2019
  */
-
 public class EfsRestClientErrorHandler implements ResponseErrorHandler {
 
-	private static ObjectMapper mapper;
-	private static final Logger log = LoggerFactory.getLogger(EfsRestClientErrorHandler.class);
-	
-	static {
-		mapper = new ObjectMapper()
-					.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-					.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	}
-	
-	@Override
-	public boolean hasError(ClientHttpResponse response) throws IOException {
-		return response.getStatusCode().series() == Series.CLIENT_ERROR ||
-				response.getStatusCode().series() == Series.SERVER_ERROR ;
-	}
+    private static ObjectMapper mapper;
+    private static final Logger log = LoggerFactory.getLogger(EfsRestClientErrorHandler.class);
 
-	@Override
-	public void handleError(ClientHttpResponse response) throws IOException {
-		HttpStatus httpStatus = response.getStatusCode();
+    static {
+        mapper = new ObjectMapper()
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
-		String responseBody = "";
-		try (Scanner scanner = new Scanner(response.getBody(), Charset.forName("UTF-8").name())) {
-			responseBody = scanner.useDelimiter("\\A").next();
-		}
-		
-		EfsError error;
-		try {
-			error = mapper.readValue(responseBody, EfsError.class);
-		} catch (IOException e1) {
-			error = new EfsError().setMessage(responseBody)
-						.setCode(httpStatus.value());
-		}
-		
-		log.error("Error Response: {}", responseBody);
-		
-		if(httpStatus.is4xxClientError()) {
-			throw new HttpClientException(error, httpStatus);
-		}
-		
-		if(httpStatus.is5xxServerError()) {
-			throw new HttpServerException(error, httpStatus);
-		}
-	}
+    @Override
+    public boolean hasError(ClientHttpResponse response) throws IOException {
+        return response.getStatusCode().series() == Series.CLIENT_ERROR
+                || response.getStatusCode().series() == Series.SERVER_ERROR;
+    }
 
+    @Override
+    public void handleError(ClientHttpResponse response) throws IOException {
+        HttpStatus httpStatus = response.getStatusCode();
+
+        String responseBody;
+
+        try (Scanner scanner = new Scanner(response.getBody(), Charset.forName("UTF-8").name())) {
+            responseBody = scanner.useDelimiter("\\A").next();
+        }
+
+        EfsError error;
+        try {
+            error = mapper.readValue(responseBody, EfsError.class);
+        } catch (IOException e1) {
+            error = new EfsError().setMessage(responseBody)
+                    .setCode(httpStatus.value());
+        }
+
+        log.error("Error Response: {}", responseBody);
+
+        throw new HttpException(httpStatus, error);
+    }
 
 }

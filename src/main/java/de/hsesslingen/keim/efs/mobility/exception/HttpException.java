@@ -44,81 +44,43 @@ public class HttpException extends AbstractEfsException {
     /**
      * @see HttpClientException
      * @param error
-     * @param httpStatus
-     */
-    public HttpException(HttpStatus httpStatus, EfsError error) {
-        super(error, httpStatus);
-    }
-
-    /**
-     * @see HttpClientException
-     * @param message
      * @param status
      */
-    public HttpException(HttpStatus status, String message) {
-        super(message, status);
+    public HttpException(HttpStatus status, EfsError error) {
+        super(error, status);
     }
 
     /**
+     * @param format The message either as simple string or as a
+     * String.format(...) format string. If no variables are given, the format
+     * string is used as message as is.
+     * @param variables
      * @see HttpClientException
-     * @param message
+     * @param status
+     */
+    public HttpException(HttpStatus status, String format, Object... variables) {
+        super(variables.length > 0 ? String.format(format, variables) : format, status);
+    }
+
+    /**
+     * @param format The message either as simple string or as a
+     * String.format(...) format string. If no variables are given, the format
+     * string is used as message as is.
+     * @param variables
+     * @see HttpClientException
      * @param status
      * @param cause
      */
-    public HttpException(HttpStatus status, Throwable cause, String message) {
-        super(message, status, cause);
+    public HttpException(HttpStatus status, Throwable cause, String format, Object... variables) {
+        super(variables.length > 0 ? String.format(format, variables) : format, status, cause);
     }
 
-    /**
-     * Creates a new HttpException with the given properties. If no variables
-     * are specified, the format string isn't formatted but rather used as
-     * message directly.
-     *
-     * @param statusCode
-     * @param format
-     * @param variables
-     * @return
-     */
-    public static HttpException status(HttpStatus statusCode, String format, Object... variables) {
-        String msg = format;
-
-        if (variables.length > 0) {
-            msg = String.format(format, variables);
-        }
-
-        return new HttpException(statusCode, msg);
+    public boolean isClientError() {
+        return httpStatus.is4xxClientError();
     }
 
-    /**
-     * Creates a new HttpException with the given properties. If no variables
-     * are specified, the format string isn't formatted but rather used as
-     * message directly.
-     *
-     * @param status
-     * @param cause
-     * @param format
-     * @param variables
-     * @return
-     */
-    public static HttpException status(HttpStatus status, Throwable cause, String format, Object... variables) {
-        String msg = format;
-
-        if (variables.length > 0) {
-            msg = String.format(format, variables);
-        }
-
-        return new HttpException(status, cause, msg);
-    }
-
-    /**
-     * Creates a new HttpException with the given properties.
-     *
-     * @param status
-     * @param error
-     * @return
-     */
-    public static HttpException status(HttpStatus status, EfsError error) {
-        return new HttpException(status, error);
+    public boolean isServerError() {
+        return httpStatus.is5xxServerError();
     }
 
     /**
@@ -131,7 +93,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException internalServerError(String format, Object... variables) {
-        return status(HttpStatus.INTERNAL_SERVER_ERROR, format, variables);
+        return new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, format, variables);
     }
 
     /**
@@ -145,7 +107,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException internalServerError(Throwable cause, String format, Object... variables) {
-        return status(HttpStatus.INTERNAL_SERVER_ERROR, cause, format, variables);
+        return new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, cause, format, variables);
     }
 
     /**
@@ -156,7 +118,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException internalServerError(EfsError error) {
-        return status(HttpStatus.INTERNAL_SERVER_ERROR, error);
+        return new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, error);
     }
 
     /**
@@ -169,7 +131,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException badRequest(String format, Object... variables) {
-        return status(HttpStatus.BAD_REQUEST, format, variables);
+        return new HttpException(HttpStatus.BAD_REQUEST, format, variables);
     }
 
     /**
@@ -183,7 +145,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException badRequest(Throwable cause, String format, Object... variables) {
-        return status(HttpStatus.BAD_REQUEST, cause, format, variables);
+        return new HttpException(HttpStatus.BAD_REQUEST, cause, format, variables);
     }
 
     /**
@@ -196,7 +158,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException forbidden(String format, Object... variables) {
-        return status(HttpStatus.FORBIDDEN, format, variables);
+        return new HttpException(HttpStatus.FORBIDDEN, format, variables);
     }
 
     /**
@@ -210,7 +172,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException forbidden(Throwable cause, String format, Object... variables) {
-        return status(HttpStatus.FORBIDDEN, cause, format, variables);
+        return new HttpException(HttpStatus.FORBIDDEN, cause, format, variables);
     }
 
     /**
@@ -223,7 +185,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException notImplemented(String format, Object... variables) {
-        return status(HttpStatus.NOT_IMPLEMENTED, format, variables);
+        return new HttpException(HttpStatus.NOT_IMPLEMENTED, format, variables);
     }
 
     /**
@@ -237,7 +199,7 @@ public class HttpException extends AbstractEfsException {
      * @return
      */
     public static HttpException notImplemented(Throwable cause, String format, Object... variables) {
-        return status(HttpStatus.NOT_IMPLEMENTED, cause, format, variables);
+        return new HttpException(HttpStatus.NOT_IMPLEMENTED, cause, format, variables);
     }
 
 }
