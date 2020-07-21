@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>de.hsesslingen.keim.efs</groupId>
+        <groupId>com.github.keim-hs-esslingen</groupId>
         <artifactId>efs-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
-    <groupId>de.hsesslingen.keim.efs</groupId>
+    <groupId>com.github.keim-hs-esslingen</groupId>
     <artifactId>mobility-commons</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Mobility Commons</name>
     <description>A collection of classes that are common to some projects in EFS.</description>
 
