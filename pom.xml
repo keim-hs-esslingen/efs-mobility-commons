@@ -6,15 +6,23 @@
     <parent>
         <groupId>com.github.keim-hs-esslingen</groupId>
         <artifactId>efs-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
     <groupId>com.github.keim-hs-esslingen</groupId>
     <artifactId>mobility-commons</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
+    
     <name>Mobility Commons</name>
     <description>A collection of classes that are common to some projects in EFS.</description>
+    <url>https://github.com/keim-hs-esslingen/mobility-commons</url>
+    
+    <scm>
+        <connection>scm:git:git://github.com:keim-hs-esslingen/mobility-commons.git</connection>
+        <developerConnection>scm:git:ssh://github.com:keim-hs-esslingen/mobility-commons.git</developerConnection>
+        <url>https://github.com/keim-hs-esslingen/mobility-commons</url>
+    </scm>
 
     <licenses>
         <license>
