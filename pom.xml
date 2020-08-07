@@ -16,12 +16,12 @@
     
     <name>Mobility Commons</name>
     <description>A collection of classes that are common to some projects in EFS.</description>
-    <url>https://github.com/keim-hs-esslingen/mobility-commons</url>
+    <url>https://github.com/keim-hs-esslingen/efs-mobility-commons</url>
     
     <scm>
-        <connection>scm:git:git://github.com:keim-hs-esslingen/mobility-commons.git</connection>
-        <developerConnection>scm:git:ssh://github.com:keim-hs-esslingen/mobility-commons.git</developerConnection>
-        <url>https://github.com/keim-hs-esslingen/mobility-commons</url>
+        <connection>scm:git:git://github.com:keim-hs-esslingen/efs-mobility-commons.git</connection>
+        <developerConnection>scm:git:ssh://github.com:keim-hs-esslingen/efs-mobility-commons.git</developerConnection>
+        <url>https://github.com/keim-hs-esslingen/efs-mobility-commons</url>
     </scm>
 
     <licenses>
