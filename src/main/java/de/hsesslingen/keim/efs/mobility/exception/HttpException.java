@@ -202,4 +202,30 @@ public class HttpException extends AbstractEfsException {
         return new HttpException(HttpStatus.NOT_IMPLEMENTED, cause, format, variables);
     }
 
+    /**
+     * Creates a new HttpException with status code UNAUTHORIZED and the given
+     * message. If no variables are specified, the format string isn't formatted
+     * but rather used as message directly.
+     *
+     * @param format
+     * @param variables
+     * @return
+     */
+    public static HttpException unauthorized(String format, Object... variables) {
+        return new HttpException(HttpStatus.UNAUTHORIZED, format, variables);
+    }
+
+    /**
+     * Creates a new HttpException with status code UNAUTHORIZED and the given
+     * message and {@link Throwable}. If no variables are specified, the format
+     * string isn't formatted but rather used as message directly.
+     *
+     * @param cause
+     * @param format
+     * @param variables
+     * @return
+     */
+    public static HttpException unauthorized(Throwable cause, String format, Object... variables) {
+        return new HttpException(HttpStatus.UNAUTHORIZED, cause, format, variables);
+    }
 }
