@@ -45,14 +45,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * The default class for building and sending requests in the EFS-project. Does
- * nothing else but setting all the visibility levels of EfsRequest to
- * public and providing some static starter methods for building requests.
+ * nothing else but setting all the visibility levels of EfsRequest to public
+ * and providing some static starter methods for building requests.
  *
  * @author boesch
  * @param <T>
  */
 public class EfsRequest<T> extends AbstractRequest<T> {
-    
+
     //<editor-fold defaultstate="collapsed" desc="Configuration code">
     private static final Logger log = LoggerFactory.getLogger(EfsRequest.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -64,7 +64,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     private static RestTemplate restTemplate;
     private static RestTemplate restTemplateLoadBalanced;
     private static final List<Consumer<EfsRequest>> outgoingRequestAdapters = new ArrayList<>();
-    
+
     public static void configureRestTemplates(RestTemplate loadBalanced, RestTemplate normal) {
         EfsRequest.restTemplate = normal;
         EfsRequest.restTemplateLoadBalanced = loadBalanced;
@@ -74,7 +74,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      * This adds an adapter to the list of outgoing adapters. These adapters are
      * called before a request is send off to be able to add or change
      * information.
-     *
+     * <p>
      * An adapter can even throw an exception to intercept the sending of the
      * request.
      *
@@ -84,8 +84,21 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         outgoingRequestAdapters.add(adapter);
     }
     //</editor-fold>
-    
-    private Object credentials;    
+
+    private Object credentials;
+
+    /**
+     * Tells whether this request is send in interest of an internal
+     * source/motivation and was not triggered upon input from outside.
+     * <p>
+     * Frameworks that use the middleware-core library can use this flag
+     * together with outgoing request adapters to add credentials to outgoing
+     * requests. Either their own, or those delivered by Authentication from the
+     * original caller.
+     * <p>
+     * Set to true using {@link toInternal()}.
+     */
+    private boolean isInternal = false;
 
     public EfsRequest(HttpMethod method, String uri) {
         super(method, uri);
@@ -148,7 +161,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         return new EfsRequest<>(method, uri);
     }
     //</editor-fold>
-    
+
     @Override
     public RestTemplate getRestTemplate() {
         // This method is overridden from super class, because we need to provide a different rest template.
@@ -160,7 +173,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
             return restTemplateLoadBalanced;
         }
     }
-    
+
     /**
      * This method will set the credentials that shall be used in this request.
      *
@@ -171,8 +184,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         this.credentials = credentials;
         return this;
     }
-    
-    
+
     private void callOutgoingRequestAdapters() {
         for (var adapter : outgoingRequestAdapters) {
             adapter.accept(this);
@@ -196,7 +208,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
             log.error("Credential information could not be added to HttpHeader", e);
         }
     }
-    
+
     @Override
     public <R> EfsRequest<R> expect(ParameterizedTypeReference<R> responseTypeReference) {
         return (EfsRequest<R>) super.expect(responseTypeReference); //To change body of generated methods, choose Tools | Templates.
@@ -283,6 +295,15 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         addCredentialsToHeader();
         callOutgoingRequestAdapters();
         return super.go();
+    }
+
+    public EfsRequest<T> toInternal() {
+        this.isInternal = true;
+        return this;
+    }
+
+    public boolean isInternal() {
+        return this.isInternal;
     }
 
     @Override
