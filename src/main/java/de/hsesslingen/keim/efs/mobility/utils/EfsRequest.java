@@ -221,82 +221,82 @@ public class EfsRequest<T> extends AbstractRequest<T> {
 
     @Override
     public <R> EfsRequest<R> expect(ParameterizedTypeReference<R> responseTypeReference) {
-        return (EfsRequest<R>) super.expect(responseTypeReference); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<R>) super.expect(responseTypeReference);
     }
 
     @Override
     public <R> EfsRequest<R> expect(Class<R> responseTypeClass) {
-        return (EfsRequest<R>) super.expect(responseTypeClass); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<R>) super.expect(responseTypeClass);
     }
 
     @Override
     public EfsRequest<T> uriVariables(Map<String, ?> uriVariables) {
-        return (EfsRequest<T>) super.uriVariables(uriVariables); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.uriVariables(uriVariables);
     }
 
     @Override
     public EfsRequest<T> uriVariables(Object... uriVariables) {
-        return (EfsRequest<T>) super.uriVariables(uriVariables); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.uriVariables(uriVariables);
     }
 
     @Override
     public EfsRequest<T> query(MultiValueMap<String, String> params) {
-        return (EfsRequest<T>) super.query(params); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.query(params);
     }
 
     @Override
     public EfsRequest<T> query(String key, Object... values) {
-        return (EfsRequest<T>) super.query(key, values); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.query(key, values);
     }
 
     @Override
     public EfsRequest<T> query(String key, Object value) {
-        return (EfsRequest<T>) super.query(key, value); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.query(key, value);
     }
 
     @Override
     public EfsRequest<T> query(String query) {
-        return (EfsRequest<T>) super.query(query); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.query(query);
     }
 
     @Override
     public EfsRequest<T> contentType(String contentType) {
-        return (EfsRequest<T>) super.contentType(contentType); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.contentType(contentType);
     }
 
     @Override
     public EfsRequest<T> header(String key, String value) {
-        return (EfsRequest<T>) super.header(key, value); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.header(key, value);
     }
 
     @Override
     public EfsRequest<T> headers(String key, List<? extends String> values) {
-        return (EfsRequest<T>) super.headers(key, values); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.headers(key, values);
     }
 
     @Override
     public EfsRequest<T> headers(Map<String, String> headersToAdd) {
-        return (EfsRequest<T>) super.headers(headersToAdd); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.headers(headersToAdd);
     }
 
     @Override
     public EfsRequest<T> body(Object body) {
-        return (EfsRequest<T>) super.body(body); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.body(body);
     }
 
     @Override
     public EfsRequest<T> entity(HttpEntity entity) {
-        return (EfsRequest<T>) super.entity(entity); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.entity(entity);
     }
 
     @Override
     public EfsRequest<T> uri(URI uri) {
-        return (EfsRequest<T>) super.uri(uri); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.uri(uri);
     }
 
     @Override
     public EfsRequest<T> uri(String uri) {
-        return (EfsRequest<T>) super.uri(uri); //To change body of generated methods, choose Tools | Templates.
+        return (EfsRequest<T>) super.uri(uri);
     }
 
     @Override
@@ -318,52 +318,52 @@ public class EfsRequest<T> extends AbstractRequest<T> {
 
     @Override
     public ParameterizedTypeReference<T> responseTypeReference() {
-        return super.responseTypeReference(); //To change body of generated methods, choose Tools | Templates.
+        return super.responseTypeReference();
     }
 
     @Override
     public Class<T> responseTypeClass() {
-        return super.responseTypeClass(); //To change body of generated methods, choose Tools | Templates.
+        return super.responseTypeClass();
     }
 
     @Override
     public Map<String, ?> uriVariablesMap() {
-        return super.uriVariablesMap(); //To change body of generated methods, choose Tools | Templates.
+        return super.uriVariablesMap();
     }
 
     @Override
     public Object[] uriVariables() {
-        return super.uriVariables(); //To change body of generated methods, choose Tools | Templates.
+        return super.uriVariables();
     }
 
     @Override
     public HttpHeaders headers() {
-        return super.headers(); //To change body of generated methods, choose Tools | Templates.
+        return super.headers();
     }
 
     @Override
     public String contentType() {
-        return super.contentType(); //To change body of generated methods, choose Tools | Templates.
+        return super.contentType();
     }
 
     @Override
     public Object body() {
-        return super.body(); //To change body of generated methods, choose Tools | Templates.
+        return super.body();
     }
 
     @Override
     public HttpEntity entity() {
-        return super.entity(); //To change body of generated methods, choose Tools | Templates.
+        return super.entity();
     }
 
     @Override
     public HttpMethod method() {
-        return super.method(); //To change body of generated methods, choose Tools | Templates.
+        return super.method();
     }
 
     @Override
     public UriComponentsBuilder uriBuilder() {
-        return super.uriBuilder(); //To change body of generated methods, choose Tools | Templates.
+        return super.uriBuilder();
     }
 
 }
