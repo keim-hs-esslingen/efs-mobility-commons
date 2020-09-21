@@ -186,18 +186,32 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     }
 
     private boolean outgoingRequestAdaptersCalled = false;
+
+    /**
+     * This function calls the registered request adapters with this request.
+     * Calling this function multiple times has no effect. The adapters are
+     * called only once.
+     * <p>
+     * If this function is not called manually if will be called automatically
+     * before the request is sent.
+     * <p>
+     * Request adapters can be registered using
+     * {@link EfsRequest.addOutgoingRequestAdapter}.
+     *
+     * @return
+     */
     public EfsRequest<T> callOutgoingRequestAdapters() {
         // Check if the outgoing adapters were already called once. If so, don't do it again.
-        if(this.outgoingRequestAdaptersCalled){
+        if (this.outgoingRequestAdaptersCalled) {
             return this;
         }
-        
+
         outgoingRequestAdaptersCalled = true;
-        
+
         for (var adapter : outgoingRequestAdapters) {
             adapter.accept(this);
         }
-        
+
         return this;
     }
 
