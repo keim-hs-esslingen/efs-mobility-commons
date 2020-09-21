@@ -185,10 +185,20 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         return this;
     }
 
-    private void callOutgoingRequestAdapters() {
+    private boolean outgoingRequestAdaptersCalled = false;
+    public EfsRequest<T> callOutgoingRequestAdapters() {
+        // Check if the outgoing adapters were already called once. If so, don't do it again.
+        if(this.outgoingRequestAdaptersCalled){
+            return this;
+        }
+        
+        outgoingRequestAdaptersCalled = true;
+        
         for (var adapter : outgoingRequestAdapters) {
             adapter.accept(this);
         }
+        
+        return this;
     }
 
     private void addCredentialsToHeader() {
