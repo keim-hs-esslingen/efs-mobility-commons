@@ -54,7 +54,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class EfsRequest<T> extends AbstractRequest<T> {
 
     //<editor-fold defaultstate="collapsed" desc="Configuration code">
-    private static final Logger log = LoggerFactory.getLogger(EfsRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(EfsRequest.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final String LOCALHOST = "localhost";
     public static final String CREDENTIALS_HEADER_NAME = "x-credentials";
@@ -229,7 +229,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
                 super.header(CREDENTIALS_HEADER_NAME, mapper.writeValueAsString(credentials));
             }
         } catch (JsonProcessingException e) {
-            log.error("Credential information could not be added to HttpHeader", e);
+            logger.error("Credential information could not be added to HttpHeader", e);
         }
     }
 

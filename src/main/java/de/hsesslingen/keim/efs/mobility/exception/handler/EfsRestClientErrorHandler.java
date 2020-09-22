@@ -53,7 +53,7 @@ import de.hsesslingen.keim.efs.mobility.exception.HttpException;
 public class EfsRestClientErrorHandler implements ResponseErrorHandler {
 
     private static ObjectMapper mapper;
-    private static final Logger log = LoggerFactory.getLogger(EfsRestClientErrorHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(EfsRestClientErrorHandler.class);
 
     static {
         mapper = new ObjectMapper()
@@ -85,7 +85,7 @@ public class EfsRestClientErrorHandler implements ResponseErrorHandler {
                     .setCode(httpStatus.value());
         }
 
-        log.error("Error Response: {}", responseBody);
+        logger.error("Error Response: {}", responseBody);
 
         throw new HttpException(httpStatus, error);
     }
