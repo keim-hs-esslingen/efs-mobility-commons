@@ -90,14 +90,14 @@ public class MobilityService implements Serializable {
      */
     @NotEmpty
     @ApiModelProperty(value = "Collection of supported mobility types", required = true)
-    private Set<MobilityType> mobilityType;
+    private Set<MobilityType> mobilityTypes;
 
     /**
      * Collection of supported modes.
      */
     @NotEmpty
     @ApiModelProperty(value = "Collection of supported modes", required = true)
-    private Set<Mode> mode;
+    private Set<Mode> modes;
 
     @ApiModelProperty(value = "The apis provided by this mobility service.", required = true)
     private Set<API> apis;
