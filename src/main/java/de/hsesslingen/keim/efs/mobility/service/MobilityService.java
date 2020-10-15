@@ -99,4 +99,13 @@ public class MobilityService implements Serializable {
     @ApiModelProperty(value = "Collection of supported modes", required = true)
     private Set<Mode> mode;
 
+    @ApiModelProperty(value = "The apis provided by this mobility service.", required = true)
+    private Set<API> apis;
+
+    public enum API {
+        PLACES_API,
+        OPTIONS_API,
+        BOOKING_API,
+        CREDENTIALS_API
+    }
 }
