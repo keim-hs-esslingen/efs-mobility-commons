@@ -26,7 +26,6 @@ package de.hsesslingen.keim.efs.mobility.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hsesslingen.keim.restutils.AbstractRequest;
-import de.hsesslingen.keim.restutils.UrlUtils;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,18 +55,16 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     //<editor-fold defaultstate="collapsed" desc="Configuration code">
     private static final Logger logger = LoggerFactory.getLogger(EfsRequest.class);
     private static final ObjectMapper mapper = new ObjectMapper();
-    private static final String LOCALHOST = "localhost";
+
     public static final String CREDENTIALS_HEADER_NAME = "x-credentials";
     public static final String CREDENTIALS_HEADER_DESC = "Credential data as json content string";
 
     // These values must be configured once statically using EfsRequest.configureRestTemplates(...).
     private static RestTemplate restTemplate;
-    private static RestTemplate restTemplateLoadBalanced;
     private static final List<Consumer<EfsRequest>> outgoingRequestAdapters = new ArrayList<>();
 
-    public static void configureRestTemplates(RestTemplate loadBalanced, RestTemplate normal) {
-        EfsRequest.restTemplate = normal;
-        EfsRequest.restTemplateLoadBalanced = loadBalanced;
+    public static void configureRestTemplates(RestTemplate restTemplate) {
+        EfsRequest.restTemplate = restTemplate;
     }
 
     /**
@@ -164,14 +161,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
 
     @Override
     public RestTemplate getRestTemplate() {
-        // This method is overridden from super class, because we need to provide a different rest template.
-        String host = uriBuilder().build().getHost();
-
-        if (LOCALHOST.equals(host) || UrlUtils.isValidDomainName(host) || UrlUtils.isValidIpAddress(host)) {
-            return restTemplate;
-        } else {
-            return restTemplateLoadBalanced;
-        }
+        return restTemplate;
     }
 
     /**
