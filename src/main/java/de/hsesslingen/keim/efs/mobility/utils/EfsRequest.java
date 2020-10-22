@@ -49,7 +49,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class EfsRequest<T> extends AbstractRequest<T> {
 
     //<editor-fold defaultstate="collapsed" desc="Configuration code">
-    public static final String CREDENTIALS_HEADER = "x-credentials";
     public static final String USER_ID_HEADER = "x-user-id";
     public static final String SECRET_HEADER = "x-secret";
     public static final String TOKEN_HEADER = "x-token";
