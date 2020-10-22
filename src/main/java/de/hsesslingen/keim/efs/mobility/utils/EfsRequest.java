@@ -23,16 +23,12 @@
  */
 package de.hsesslingen.keim.efs.mobility.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hsesslingen.keim.restutils.AbstractRequest;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -53,11 +49,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class EfsRequest<T> extends AbstractRequest<T> {
 
     //<editor-fold defaultstate="collapsed" desc="Configuration code">
-    private static final Logger logger = LoggerFactory.getLogger(EfsRequest.class);
-    private static final ObjectMapper mapper = new ObjectMapper();
-
-    public static final String CREDENTIALS_HEADER_NAME = "x-credentials";
-    public static final String CREDENTIALS_HEADER_DESC = "Credential data as json content string";
+    public static final String CREDENTIALS_HEADER = "x-credentials";
+    public static final String USER_ID_HEADER = "x-user-id";
+    public static final String SECRET_HEADER = "x-secret";
+    public static final String TOKEN_HEADER = "x-token";
 
     // These values must be configured once statically using EfsRequest.configureRestTemplates(...).
     private static RestTemplate restTemplate;
@@ -82,7 +77,9 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     }
     //</editor-fold>
 
-    private Object credentials;
+    private String token;
+    private String userId;
+    private String secret;
 
     /**
      * Tells whether this request is send in interest of an internal
@@ -165,13 +162,27 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     }
 
     /**
-     * This method will set the credentials that shall be used in this request.
+     * This method will set the token that shall be used in this request.
      *
-     * @param credentials
+     * @param token
      * @return
      */
-    public EfsRequest<T> credentials(Object credentials) {
-        this.credentials = credentials;
+    public EfsRequest<T> token(String token) {
+        this.token = token;
+        return this;
+    }
+
+    /**
+     * This method will set the userId and secret that shall be used in this
+     * request.
+     *
+     * @param userId
+     * @param secret
+     * @return
+     */
+    public EfsRequest<T> userIdAndSecret(String userId, String secret) {
+        this.userId = userId;
+        this.secret = secret;
         return this;
     }
 
@@ -206,20 +217,16 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     }
 
     private void addCredentialsToHeader() {
-        if (credentials == null) {
-            return;
+        if (token != null) {
+            super.header(TOKEN_HEADER, token);
         }
 
-        try {
-            if (credentials instanceof Map) {
-                super.headers((Map) credentials);
-            } else if (credentials instanceof String) {
-                super.header(CREDENTIALS_HEADER_NAME, (String) credentials);
-            } else {
-                super.header(CREDENTIALS_HEADER_NAME, mapper.writeValueAsString(credentials));
-            }
-        } catch (JsonProcessingException e) {
-            logger.error("Credential information could not be added to HttpHeader", e);
+        if (userId != null) {
+            super.header(USER_ID_HEADER, userId);
+        }
+
+        if (secret != null) {
+            super.header(SECRET_HEADER, secret);
         }
     }
 
