@@ -102,6 +102,10 @@ public class MobilityService implements Serializable {
     @ApiModelProperty(value = "The apis provided by this mobility service.", required = true)
     private Set<API> apis;
 
+    public boolean supportsApi(API api) {
+        return apis.contains(api);
+    }
+
     public enum API {
         PLACES_API,
         OPTIONS_API,
