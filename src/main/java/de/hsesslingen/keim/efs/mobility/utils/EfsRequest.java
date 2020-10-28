@@ -40,11 +40,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * The default class for building and sending requests in the EFS-project. Does
- * nothing else but setting all the visibility levels of EfsRequest to public
- * and providing some static starter methods for building requests.
+ * nothing else but setting all the visibility levels of {@link AbstractRequest}
+ * to public, adding some extra methods for EFS-specific fetaures and providing
+ * some static methods for building requests easily.
+ * <p>
+ * The {@link EfsRequest} class is a wrapper of Springs {@link RestTemplate}
+ * clas for building requests using a builder pattern wich chainable methods.
+ * See {@link AbstractRequest} for more details on this.
  *
  * @author boesch
  * @param <T>
+ * @see AbstractRequest
  */
 public class EfsRequest<T> extends AbstractRequest<T> {
 
