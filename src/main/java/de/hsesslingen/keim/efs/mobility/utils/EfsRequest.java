@@ -59,11 +59,11 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     public static final String SECRET_HEADER = "x-secret";
     public static final String TOKEN_HEADER = "x-token";
 
-    // These values must be configured once statically using EfsRequest.configureRestTemplates(...).
+    // These values must be configured once statically using EfsRequest.configureRestTemplate(...).
     private static RestTemplate restTemplate;
     private static final List<Consumer<EfsRequest>> outgoingRequestAdapters = new ArrayList<>();
 
-    public static void configureRestTemplates(RestTemplate restTemplate) {
+    public static void configureRestTemplate(RestTemplate restTemplate) {
         EfsRequest.restTemplate = restTemplate;
     }
 
