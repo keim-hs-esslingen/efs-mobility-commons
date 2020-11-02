@@ -21,8 +21,8 @@
         <connection>scm:git:https://github.com/keim-hs-esslingen/efs-mobility-commons.git</connection>
         <developerConnection>scm:git:https://github.com/keim-hs-esslingen/efs-mobility-commons.git</developerConnection>
         <url>https://github.com/keim-hs-esslingen/efs-mobility-commons</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <licenses>
         <license>
