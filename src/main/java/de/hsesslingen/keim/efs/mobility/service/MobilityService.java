@@ -108,6 +108,7 @@ public class MobilityService implements Serializable {
 
     public enum API {
         PLACES_API,
+        ASSETS_API,
         OPTIONS_API,
         BOOKING_API,
         CREDENTIALS_API
