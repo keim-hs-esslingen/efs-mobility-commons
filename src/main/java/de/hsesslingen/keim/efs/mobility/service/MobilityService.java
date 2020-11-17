@@ -86,13 +86,6 @@ public class MobilityService implements Serializable {
     private String serviceArea;
 
     /**
-     * Collection of supported mobility types.
-     */
-    @NotEmpty
-    @ApiModelProperty(value = "Collection of supported mobility types", required = true)
-    private Set<MobilityType> mobilityTypes;
-
-    /**
      * Collection of supported modes.
      */
     @NotEmpty
