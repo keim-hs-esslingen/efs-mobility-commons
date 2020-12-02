@@ -191,6 +191,28 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         return this;
     }
 
+    /**
+     * This method will set the user-ID that shall be used in this request.
+     *
+     * @param userId
+     * @return
+     */
+    public EfsRequest<T> userId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    /**
+     * This method will set the secret that shall be used in this request.
+     *
+     * @param secret
+     * @return
+     */
+    public EfsRequest<T> secret(String secret) {
+        this.secret = secret;
+        return this;
+    }
+
     private boolean outgoingRequestAdaptersCalled = false;
 
     /**

@@ -99,11 +99,20 @@ public class MobilityService implements Serializable {
         return apis.contains(api);
     }
 
+    /**
+     * Contains information about the Users-API, if that API is supported by
+     * this service.
+     */
+    @ApiModelProperty(value = "Contains information about the Users-API, in case this API is supported by this service.")
+    private UsersApiProperties usersApiProperties;
+
     public enum API {
         PLACES_API,
         ASSETS_API,
         OPTIONS_API,
         BOOKING_API,
-        CREDENTIALS_API
+        CREDENTIALS_API,
+        USERS_API
     }
+
 }
