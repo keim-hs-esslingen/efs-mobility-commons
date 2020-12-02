@@ -50,7 +50,7 @@ public class UsersApiProperties {
      * users and therefore must be not-null in the {@link Customer} object of
      * that endpoint.
      */
-    private List<String> requiredCustomerPropertiesUponRegistration;
+    private List<String> requiredCustomerPropertiesForRegistration;
 
     /**
      * Whether users can be registered under a super-user-account, when using
