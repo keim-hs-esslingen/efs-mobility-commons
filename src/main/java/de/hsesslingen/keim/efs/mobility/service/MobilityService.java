@@ -66,6 +66,11 @@ public class MobilityService implements Serializable {
     private String providerName;
 
     /**
+     * An URL pointing to an image resource that shows the providers logo.
+     */
+    private String serviceLogoUrl;
+
+    /**
      * Unique name of the service provided by the TSP.
      */
     @NotEmpty
