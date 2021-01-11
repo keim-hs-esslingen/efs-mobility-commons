@@ -29,7 +29,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import de.hsesslingen.keim.efs.mobility.exception.EfsError;
+import de.hsesslingen.keim.efs.mobility.exception.MiddlewareError;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -41,9 +41,9 @@ import io.swagger.annotations.ApiResponses;
  */
 
 @ApiResponses(value = {
-		@ApiResponse(code = 400, response = EfsError.class, message = "Bad Request"),
-		@ApiResponse(code = 404, response = EfsError.class, message = "Not Found"),
-		@ApiResponse(code = 500, response = EfsError.class, message = "Internal Server Error")
+		@ApiResponse(code = 400, response = MiddlewareError.class, message = "Bad Request"),
+		@ApiResponse(code = 404, response = MiddlewareError.class, message = "Not Found"),
+		@ApiResponse(code = 500, response = MiddlewareError.class, message = "Internal Server Error")
 })
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

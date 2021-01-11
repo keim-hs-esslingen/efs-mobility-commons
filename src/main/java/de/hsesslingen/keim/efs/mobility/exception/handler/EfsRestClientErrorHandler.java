@@ -28,7 +28,6 @@ import java.nio.charset.Charset;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;
 import org.springframework.http.client.ClientHttpResponse;
@@ -39,8 +38,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import de.hsesslingen.keim.efs.mobility.exception.EfsError;
-import de.hsesslingen.keim.efs.mobility.exception.HttpException;
+import de.hsesslingen.keim.efs.mobility.exception.MiddlewareError;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Implementation of {@link ResponseErrorHandler} that is responsible for
@@ -52,8 +51,8 @@ import de.hsesslingen.keim.efs.mobility.exception.HttpException;
  */
 public class EfsRestClientErrorHandler implements ResponseErrorHandler {
 
-    private static ObjectMapper mapper;
-    private static final Logger logger = LoggerFactory.getLogger(EfsRestClientErrorHandler.class);
+    private static final Logger logger = getLogger(EfsRestClientErrorHandler.class);
+    private static final ObjectMapper mapper;
 
     static {
         mapper = new ObjectMapper()
@@ -73,21 +72,21 @@ public class EfsRestClientErrorHandler implements ResponseErrorHandler {
 
         String responseBody;
 
-        try (Scanner scanner = new Scanner(response.getBody(), Charset.forName("UTF-8").name())) {
+        try ( Scanner scanner = new Scanner(response.getBody(), Charset.forName("UTF-8").name())) {
             responseBody = scanner.useDelimiter("\\A").next();
         }
 
-        EfsError error;
+        MiddlewareError error;
+
         try {
-            error = mapper.readValue(responseBody, EfsError.class);
+            error = mapper.readValue(responseBody, MiddlewareError.class);
         } catch (IOException e1) {
-            error = new EfsError().setMessage(responseBody)
-                    .setCode(httpStatus.value());
+            error = new MiddlewareError(httpStatus.value(), responseBody);
         }
 
         logger.error("Error Response: {}", responseBody);
 
-        throw new HttpException(httpStatus, error);
+        throw error.toException();
     }
 
 }

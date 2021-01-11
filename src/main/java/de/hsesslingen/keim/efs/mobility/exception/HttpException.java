@@ -26,28 +26,31 @@ package de.hsesslingen.keim.efs.mobility.exception;
 import org.springframework.http.HttpStatus;
 
 /**
+ * Serves as an exception class that corresponds to an HTTP error response.
+ * Therefore this class always contains a non-null HttpStatus value.
  *
  * @author keim
  */
-public class HttpException extends AbstractEfsException {
+public class HttpException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * @see HttpClientException
-     * @param error
+     * The HTTP status associated with this exception.
      */
-    public HttpException(EfsError error) {
-        super(error);
-    }
+    protected final HttpStatus httpStatus;
 
     /**
+     * @param format The message either as simple string or as a
+     * String.format(...) format string. If no variables are given, the format
+     * string is used as message as is.
+     * @param variables
      * @see HttpClientException
-     * @param error
-     * @param status
+     * @param httpStatus
      */
-    public HttpException(HttpStatus status, EfsError error) {
-        super(error, status);
+    public HttpException(HttpStatus httpStatus, String format, Object... variables) {
+        super(variables.length > 0 ? String.format(format, variables) : format);
+        this.httpStatus = httpStatus;
     }
 
     /**
@@ -56,23 +59,12 @@ public class HttpException extends AbstractEfsException {
      * string is used as message as is.
      * @param variables
      * @see HttpClientException
-     * @param status
-     */
-    public HttpException(HttpStatus status, String format, Object... variables) {
-        super(variables.length > 0 ? String.format(format, variables) : format, status);
-    }
-
-    /**
-     * @param format The message either as simple string or as a
-     * String.format(...) format string. If no variables are given, the format
-     * string is used as message as is.
-     * @param variables
-     * @see HttpClientException
-     * @param status
+     * @param httpStatus
      * @param cause
      */
-    public HttpException(HttpStatus status, Throwable cause, String format, Object... variables) {
-        super(variables.length > 0 ? String.format(format, variables) : format, status, cause);
+    public HttpException(HttpStatus httpStatus, Throwable cause, String format, Object... variables) {
+        super(variables.length > 0 ? String.format(format, variables) : format, cause);
+        this.httpStatus = httpStatus;
     }
 
     public boolean isClientError() {
@@ -81,6 +73,10 @@ public class HttpException extends AbstractEfsException {
 
     public boolean isServerError() {
         return httpStatus.is5xxServerError();
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
     /**
@@ -108,17 +104,6 @@ public class HttpException extends AbstractEfsException {
      */
     public static HttpException internalServerError(Throwable cause, String format, Object... variables) {
         return new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, cause, format, variables);
-    }
-
-    /**
-     * Creates a new HttpException with status code INTERNAL_SERVER_ERROR and
-     * the given {@link EfsError}.
-     *
-     * @param error
-     * @return
-     */
-    public static HttpException internalServerError(EfsError error) {
-        return new HttpException(HttpStatus.INTERNAL_SERVER_ERROR, error);
     }
 
     /**
@@ -227,5 +212,32 @@ public class HttpException extends AbstractEfsException {
      */
     public static HttpException unauthorized(Throwable cause, String format, Object... variables) {
         return new HttpException(HttpStatus.UNAUTHORIZED, cause, format, variables);
+    }
+
+    /**
+     * Creates a new HttpException with status code NOT_FOUND and the given
+     * message. If no variables are specified, the format string isn't formatted
+     * but rather used as message directly.
+     *
+     * @param format
+     * @param variables
+     * @return
+     */
+    public static HttpException notFound(String format, Object... variables) {
+        return new HttpException(HttpStatus.NOT_FOUND, format, variables);
+    }
+
+    /**
+     * Creates a new HttpException with status code NOT_FOUND and the given
+     * message and {@link Throwable}. If no variables are specified, the format
+     * string isn't formatted but rather used as message directly.
+     *
+     * @param cause
+     * @param format
+     * @param variables
+     * @return
+     */
+    public static HttpException notFound(Throwable cause, String format, Object... variables) {
+        return new HttpException(HttpStatus.NOT_FOUND, cause, format, variables);
     }
 }
