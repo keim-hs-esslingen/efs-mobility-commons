@@ -26,7 +26,6 @@ package de.hsesslingen.keim.efs.mobility.utils;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import org.springframework.http.HttpMethod;
 import static org.springframework.http.HttpMethod.*;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -36,10 +35,10 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author ben
  */
-public class MiddlewareRequestTemplate {
+public abstract class MiddlewareRequestTemplate {
 
     private RestTemplate restTemplate;
-    private List<Consumer<MiddlewareRequest>> requestAdapters;
+    private List<MiddlewareRequestAdapter> requestAdapters;
 
     /**
      * This adds the given adapter to the list of request adapters. These
@@ -51,7 +50,7 @@ public class MiddlewareRequestTemplate {
      *
      * @param adapter
      */
-    public void addRequestAdapter(Consumer<MiddlewareRequest> adapter) {
+    public void addRequestAdapter(MiddlewareRequestAdapter adapter) {
         if (this.requestAdapters == null) {
             this.requestAdapters = new ArrayList<>();
         }

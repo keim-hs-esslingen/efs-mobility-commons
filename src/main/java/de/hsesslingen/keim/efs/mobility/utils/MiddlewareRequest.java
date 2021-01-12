@@ -27,7 +27,6 @@ import de.hsesslingen.keim.restutils.AbstractRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -58,7 +57,7 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
     public static final String TOKEN_HEADER = "x-token";
 
     private RestTemplate template;
-    private List<Consumer<MiddlewareRequest>> outgoingRequestAdapters;
+    private List<MiddlewareRequestAdapter> requestAdapters;
 
     private String token;
     private String userId;
@@ -102,55 +101,13 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
         this.template = template;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Static factory methods for easy creation.">
-    public static <X> MiddlewareRequest<X> get(String uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.GET, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> get(URI uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.GET, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> post(String uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.POST, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> post(URI uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.POST, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> put(String uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.PUT, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> put(URI uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.PUT, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> delete(String uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.DELETE, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> delete(URI uri, RestTemplate template) {
-        return new MiddlewareRequest<>(HttpMethod.DELETE, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> custom(HttpMethod method, String uri, RestTemplate template) {
-        return new MiddlewareRequest<>(method, uri, template);
-    }
-
-    public static <X> MiddlewareRequest<X> custom(HttpMethod method, URI uri, RestTemplate template) {
-        return new MiddlewareRequest<>(method, uri, template);
-    }
-    //</editor-fold>
-
     public MiddlewareRequest<T> template(RestTemplate template) {
         this.template = template;
         return this;
     }
 
-    public MiddlewareRequest<T> requestAdapters(List<Consumer<MiddlewareRequest>> adapters) {
-        this.outgoingRequestAdapters = adapters;
+    public MiddlewareRequest<T> requestAdapters(List<MiddlewareRequestAdapter> adapters) {
+        this.requestAdapters = adapters;
         return this;
     }
 
@@ -206,7 +163,7 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
         return this;
     }
 
-    private boolean outgoingRequestAdaptersCalled = false;
+    private boolean requestAdaptersCalled = false;
 
     /**
      * This function calls the registered request adapters with this request.
@@ -221,17 +178,17 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
      *
      * @return
      */
-    public MiddlewareRequest<T> callOutgoingRequestAdapters() {
+    public MiddlewareRequest<T> callRequestAdapters() {
         // Check if the outgoing adapters were already called once. If so, don't do it again.
-        if (outgoingRequestAdaptersCalled) {
+        if (requestAdaptersCalled) {
             return this;
         }
 
-        outgoingRequestAdaptersCalled = true;
+        requestAdaptersCalled = true;
 
-        if (outgoingRequestAdapters != null) {
-            for (var adapter : outgoingRequestAdapters) {
-                adapter.accept(this);
+        if (requestAdapters != null) {
+            for (var adapter : requestAdapters) {
+                adapter.adapt(this);
             }
         }
 
@@ -336,7 +293,7 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
     public ResponseEntity<T> go() {
         // Before we send the request, lets add our credentials...
         addCredentialsToHeader();
-        callOutgoingRequestAdapters();
+        callRequestAdapters();
         return super.go();
     }
 
