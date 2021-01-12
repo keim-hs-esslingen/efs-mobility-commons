@@ -44,7 +44,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * to public, adding some extra methods for EFS-specific fetaures and providing
  * some static methods for building requests easily.
  * <p>
- * The {@link EfsRequest} class is a wrapper of Springs {@link RestTemplate}
+ * The {@link MiddlewareRequest} class is a wrapper of Springs {@link RestTemplate}
  * clas for building requests using a builder pattern wich chainable methods.
  * See {@link AbstractRequest} for more details on this.
  *
@@ -52,7 +52,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @param <T>
  * @see AbstractRequest
  */
-public class EfsRequest<T> extends AbstractRequest<T> {
+public class MiddlewareRequest<T> extends AbstractRequest<T> {
 
     //<editor-fold defaultstate="collapsed" desc="Configuration code">
     public static final String USER_ID_HEADER = "x-user-id";
@@ -61,10 +61,10 @@ public class EfsRequest<T> extends AbstractRequest<T> {
 
     // These values must be configured once statically using EfsRequest.configureRestTemplate(...).
     private static RestTemplate restTemplate;
-    private static final List<Consumer<EfsRequest>> outgoingRequestAdapters = new ArrayList<>();
+    private static final List<Consumer<MiddlewareRequest>> outgoingRequestAdapters = new ArrayList<>();
 
     public static void configureRestTemplate(RestTemplate restTemplate) {
-        EfsRequest.restTemplate = restTemplate;
+        MiddlewareRequest.restTemplate = restTemplate;
     }
 
     /**
@@ -77,7 +77,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      *
      * @param adapter
      */
-    public static void addOutgoingRequestAdapter(Consumer<EfsRequest> adapter) {
+    public static void addOutgoingRequestAdapter(Consumer<MiddlewareRequest> adapter) {
         outgoingRequestAdapters.add(adapter);
     }
     //</editor-fold>
@@ -99,65 +99,65 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      */
     private boolean isInternal = false;
 
-    public EfsRequest(HttpMethod method, String uri) {
+    public MiddlewareRequest(HttpMethod method, String uri) {
         super(method, uri);
     }
 
-    public EfsRequest(HttpMethod method, URI uri) {
+    public MiddlewareRequest(HttpMethod method, URI uri) {
         super(method, uri);
     }
 
-    public EfsRequest(HttpMethod method) {
+    public MiddlewareRequest(HttpMethod method) {
         super(method);
     }
 
-    public EfsRequest(String uri) {
+    public MiddlewareRequest(String uri) {
         super(uri);
     }
 
-    public EfsRequest(URI uri) {
+    public MiddlewareRequest(URI uri) {
         super(uri);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Static factory methods for easy creation.">
-    public static <X> EfsRequest<X> get(String uri) {
-        return new EfsRequest<>(HttpMethod.GET, uri);
+    public static <X> MiddlewareRequest<X> get(String uri) {
+        return new MiddlewareRequest<>(HttpMethod.GET, uri);
     }
 
-    public static <X> EfsRequest<X> get(URI uri) {
-        return new EfsRequest<>(HttpMethod.GET, uri);
+    public static <X> MiddlewareRequest<X> get(URI uri) {
+        return new MiddlewareRequest<>(HttpMethod.GET, uri);
     }
 
-    public static <X> EfsRequest<X> post(String uri) {
-        return new EfsRequest<>(HttpMethod.POST, uri);
+    public static <X> MiddlewareRequest<X> post(String uri) {
+        return new MiddlewareRequest<>(HttpMethod.POST, uri);
     }
 
-    public static <X> EfsRequest<X> post(URI uri) {
-        return new EfsRequest<>(HttpMethod.POST, uri);
+    public static <X> MiddlewareRequest<X> post(URI uri) {
+        return new MiddlewareRequest<>(HttpMethod.POST, uri);
     }
 
-    public static <X> EfsRequest<X> put(String uri) {
-        return new EfsRequest<>(HttpMethod.PUT, uri);
+    public static <X> MiddlewareRequest<X> put(String uri) {
+        return new MiddlewareRequest<>(HttpMethod.PUT, uri);
     }
 
-    public static <X> EfsRequest<X> put(URI uri) {
-        return new EfsRequest<>(HttpMethod.PUT, uri);
+    public static <X> MiddlewareRequest<X> put(URI uri) {
+        return new MiddlewareRequest<>(HttpMethod.PUT, uri);
     }
 
-    public static <X> EfsRequest<X> delete(String uri) {
-        return new EfsRequest<>(HttpMethod.DELETE, uri);
+    public static <X> MiddlewareRequest<X> delete(String uri) {
+        return new MiddlewareRequest<>(HttpMethod.DELETE, uri);
     }
 
-    public static <X> EfsRequest<X> delete(URI uri) {
-        return new EfsRequest<>(HttpMethod.DELETE, uri);
+    public static <X> MiddlewareRequest<X> delete(URI uri) {
+        return new MiddlewareRequest<>(HttpMethod.DELETE, uri);
     }
 
-    public static <X> EfsRequest<X> custom(HttpMethod method, String uri) {
-        return new EfsRequest<>(method, uri);
+    public static <X> MiddlewareRequest<X> custom(HttpMethod method, String uri) {
+        return new MiddlewareRequest<>(method, uri);
     }
 
-    public static <X> EfsRequest<X> custom(HttpMethod method, URI uri) {
-        return new EfsRequest<>(method, uri);
+    public static <X> MiddlewareRequest<X> custom(HttpMethod method, URI uri) {
+        return new MiddlewareRequest<>(method, uri);
     }
     //</editor-fold>
 
@@ -172,7 +172,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      * @param token
      * @return
      */
-    public EfsRequest<T> token(String token) {
+    public MiddlewareRequest<T> token(String token) {
         this.token = token;
         return this;
     }
@@ -185,7 +185,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      * @param secret
      * @return
      */
-    public EfsRequest<T> userIdAndSecret(String userId, String secret) {
+    public MiddlewareRequest<T> userIdAndSecret(String userId, String secret) {
         this.userId = userId;
         this.secret = secret;
         return this;
@@ -197,7 +197,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      * @param userId
      * @return
      */
-    public EfsRequest<T> userId(String userId) {
+    public MiddlewareRequest<T> userId(String userId) {
         this.userId = userId;
         return this;
     }
@@ -208,7 +208,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      * @param secret
      * @return
      */
-    public EfsRequest<T> secret(String secret) {
+    public MiddlewareRequest<T> secret(String secret) {
         this.secret = secret;
         return this;
     }
@@ -228,7 +228,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
      *
      * @return
      */
-    public EfsRequest<T> callOutgoingRequestAdapters() {
+    public MiddlewareRequest<T> callOutgoingRequestAdapters() {
         // Check if the outgoing adapters were already called once. If so, don't do it again.
         if (this.outgoingRequestAdaptersCalled) {
             return this;
@@ -258,83 +258,83 @@ public class EfsRequest<T> extends AbstractRequest<T> {
     }
 
     @Override
-    public <R> EfsRequest<R> expect(ParameterizedTypeReference<R> responseTypeReference) {
-        return (EfsRequest<R>) super.expect(responseTypeReference);
+    public <R> MiddlewareRequest<R> expect(ParameterizedTypeReference<R> responseTypeReference) {
+        return (MiddlewareRequest<R>) super.expect(responseTypeReference);
     }
 
     @Override
-    public <R> EfsRequest<R> expect(Class<R> responseTypeClass) {
-        return (EfsRequest<R>) super.expect(responseTypeClass);
+    public <R> MiddlewareRequest<R> expect(Class<R> responseTypeClass) {
+        return (MiddlewareRequest<R>) super.expect(responseTypeClass);
     }
 
     @Override
-    public EfsRequest<T> uriVariables(Map<String, ?> uriVariables) {
-        return (EfsRequest<T>) super.uriVariables(uriVariables);
+    public MiddlewareRequest<T> uriVariables(Map<String, ?> uriVariables) {
+        return (MiddlewareRequest<T>) super.uriVariables(uriVariables);
     }
 
     @Override
-    public EfsRequest<T> uriVariables(Object... uriVariables) {
-        return (EfsRequest<T>) super.uriVariables(uriVariables);
+    public MiddlewareRequest<T> uriVariables(Object... uriVariables) {
+        return (MiddlewareRequest<T>) super.uriVariables(uriVariables);
     }
 
     @Override
-    public EfsRequest<T> query(MultiValueMap<String, String> params) {
-        return (EfsRequest<T>) super.query(params);
+    public MiddlewareRequest<T> query(MultiValueMap<String, String> params) {
+        return (MiddlewareRequest<T>) super.query(params);
     }
 
     @Override
-    public EfsRequest<T> query(String key, Object... values) {
-        return (EfsRequest<T>) super.query(key, values);
+    public MiddlewareRequest<T> query(String key, Object... values) {
+        return (MiddlewareRequest<T>) super.query(key, values);
     }
 
     @Override
-    public EfsRequest<T> query(String key, Object value) {
-        return (EfsRequest<T>) super.query(key, value);
+    public MiddlewareRequest<T> query(String key, Object value) {
+        return (MiddlewareRequest<T>) super.query(key, value);
     }
 
     @Override
-    public EfsRequest<T> query(String query) {
-        return (EfsRequest<T>) super.query(query);
+    public MiddlewareRequest<T> query(String query) {
+        return (MiddlewareRequest<T>) super.query(query);
     }
 
     @Override
-    public EfsRequest<T> contentType(String contentType) {
-        return (EfsRequest<T>) super.contentType(contentType);
+    public MiddlewareRequest<T> contentType(String contentType) {
+        return (MiddlewareRequest<T>) super.contentType(contentType);
     }
 
     @Override
-    public EfsRequest<T> header(String key, String value) {
-        return (EfsRequest<T>) super.header(key, value);
+    public MiddlewareRequest<T> header(String key, String value) {
+        return (MiddlewareRequest<T>) super.header(key, value);
     }
 
     @Override
-    public EfsRequest<T> headers(String key, List<? extends String> values) {
-        return (EfsRequest<T>) super.headers(key, values);
+    public MiddlewareRequest<T> headers(String key, List<? extends String> values) {
+        return (MiddlewareRequest<T>) super.headers(key, values);
     }
 
     @Override
-    public EfsRequest<T> headers(Map<String, String> headersToAdd) {
-        return (EfsRequest<T>) super.headers(headersToAdd);
+    public MiddlewareRequest<T> headers(Map<String, String> headersToAdd) {
+        return (MiddlewareRequest<T>) super.headers(headersToAdd);
     }
 
     @Override
-    public EfsRequest<T> body(Object body) {
-        return (EfsRequest<T>) super.body(body);
+    public MiddlewareRequest<T> body(Object body) {
+        return (MiddlewareRequest<T>) super.body(body);
     }
 
     @Override
-    public EfsRequest<T> entity(HttpEntity entity) {
-        return (EfsRequest<T>) super.entity(entity);
+    public MiddlewareRequest<T> entity(HttpEntity entity) {
+        return (MiddlewareRequest<T>) super.entity(entity);
     }
 
     @Override
-    public EfsRequest<T> uri(URI uri) {
-        return (EfsRequest<T>) super.uri(uri);
+    public MiddlewareRequest<T> uri(URI uri) {
+        return (MiddlewareRequest<T>) super.uri(uri);
     }
 
     @Override
-    public EfsRequest<T> uri(String uri) {
-        return (EfsRequest<T>) super.uri(uri);
+    public MiddlewareRequest<T> uri(String uri) {
+        return (MiddlewareRequest<T>) super.uri(uri);
     }
 
     @Override
@@ -345,7 +345,7 @@ public class EfsRequest<T> extends AbstractRequest<T> {
         return super.go();
     }
 
-    public EfsRequest<T> toInternal() {
+    public MiddlewareRequest<T> toInternal() {
         this.isInternal = true;
         return this;
     }
