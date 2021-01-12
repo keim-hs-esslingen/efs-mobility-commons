@@ -49,9 +49,9 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author k.sivarasah 1 Oct 2019
  */
-public class EfsRestClientErrorHandler implements ResponseErrorHandler {
+public class MiddlewareErrorResponseHandler implements ResponseErrorHandler {
 
-    private static final Logger logger = getLogger(EfsRestClientErrorHandler.class);
+    private static final Logger logger = getLogger(MiddlewareErrorResponseHandler.class);
     private static final ObjectMapper mapper;
 
     static {

@@ -25,7 +25,6 @@ package de.hsesslingen.keim.efs.mobility.utils;
 
 import de.hsesslingen.keim.restutils.AbstractRequest;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -44,9 +43,9 @@ import org.springframework.web.util.UriComponentsBuilder;
  * to public, adding some extra methods for EFS-specific fetaures and providing
  * some static methods for building requests easily.
  * <p>
- * The {@link MiddlewareRequest} class is a wrapper of Springs {@link RestTemplate}
- * clas for building requests using a builder pattern wich chainable methods.
- * See {@link AbstractRequest} for more details on this.
+ * The {@link MiddlewareRequest} class is a wrapper of Springs
+ * {@link RestTemplate} clas for building requests using a builder pattern wich
+ * chainable methods. See {@link AbstractRequest} for more details on this.
  *
  * @author boesch
  * @param <T>
@@ -54,33 +53,12 @@ import org.springframework.web.util.UriComponentsBuilder;
  */
 public class MiddlewareRequest<T> extends AbstractRequest<T> {
 
-    //<editor-fold defaultstate="collapsed" desc="Configuration code">
     public static final String USER_ID_HEADER = "x-user-id";
     public static final String SECRET_HEADER = "x-secret";
     public static final String TOKEN_HEADER = "x-token";
 
-    // These values must be configured once statically using EfsRequest.configureRestTemplate(...).
-    private static RestTemplate restTemplate;
-    private static final List<Consumer<MiddlewareRequest>> outgoingRequestAdapters = new ArrayList<>();
-
-    public static void configureRestTemplate(RestTemplate restTemplate) {
-        MiddlewareRequest.restTemplate = restTemplate;
-    }
-
-    /**
-     * This adds an adapter to the list of outgoing adapters. These adapters are
-     * called before a request is send off to be able to add or change
-     * information.
-     * <p>
-     * An adapter can even throw an exception to intercept the sending of the
-     * request.
-     *
-     * @param adapter
-     */
-    public static void addOutgoingRequestAdapter(Consumer<MiddlewareRequest> adapter) {
-        outgoingRequestAdapters.add(adapter);
-    }
-    //</editor-fold>
+    private RestTemplate template;
+    private List<Consumer<MiddlewareRequest>> outgoingRequestAdapters;
 
     private String token;
     private String userId;
@@ -99,71 +77,86 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
      */
     private boolean isInternal = false;
 
-    public MiddlewareRequest(HttpMethod method, String uri) {
+    public MiddlewareRequest(HttpMethod method, String uri, RestTemplate template) {
         super(method, uri);
+        this.template = template;
     }
 
-    public MiddlewareRequest(HttpMethod method, URI uri) {
+    public MiddlewareRequest(HttpMethod method, URI uri, RestTemplate template) {
         super(method, uri);
+        this.template = template;
     }
 
-    public MiddlewareRequest(HttpMethod method) {
+    public MiddlewareRequest(HttpMethod method, RestTemplate template) {
         super(method);
+        this.template = template;
     }
 
-    public MiddlewareRequest(String uri) {
+    public MiddlewareRequest(String uri, RestTemplate template) {
         super(uri);
+        this.template = template;
     }
 
-    public MiddlewareRequest(URI uri) {
+    public MiddlewareRequest(URI uri, RestTemplate template) {
         super(uri);
+        this.template = template;
     }
 
     //<editor-fold defaultstate="collapsed" desc="Static factory methods for easy creation.">
-    public static <X> MiddlewareRequest<X> get(String uri) {
-        return new MiddlewareRequest<>(HttpMethod.GET, uri);
+    public static <X> MiddlewareRequest<X> get(String uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.GET, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> get(URI uri) {
-        return new MiddlewareRequest<>(HttpMethod.GET, uri);
+    public static <X> MiddlewareRequest<X> get(URI uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.GET, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> post(String uri) {
-        return new MiddlewareRequest<>(HttpMethod.POST, uri);
+    public static <X> MiddlewareRequest<X> post(String uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.POST, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> post(URI uri) {
-        return new MiddlewareRequest<>(HttpMethod.POST, uri);
+    public static <X> MiddlewareRequest<X> post(URI uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.POST, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> put(String uri) {
-        return new MiddlewareRequest<>(HttpMethod.PUT, uri);
+    public static <X> MiddlewareRequest<X> put(String uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.PUT, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> put(URI uri) {
-        return new MiddlewareRequest<>(HttpMethod.PUT, uri);
+    public static <X> MiddlewareRequest<X> put(URI uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.PUT, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> delete(String uri) {
-        return new MiddlewareRequest<>(HttpMethod.DELETE, uri);
+    public static <X> MiddlewareRequest<X> delete(String uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.DELETE, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> delete(URI uri) {
-        return new MiddlewareRequest<>(HttpMethod.DELETE, uri);
+    public static <X> MiddlewareRequest<X> delete(URI uri, RestTemplate template) {
+        return new MiddlewareRequest<>(HttpMethod.DELETE, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> custom(HttpMethod method, String uri) {
-        return new MiddlewareRequest<>(method, uri);
+    public static <X> MiddlewareRequest<X> custom(HttpMethod method, String uri, RestTemplate template) {
+        return new MiddlewareRequest<>(method, uri, template);
     }
 
-    public static <X> MiddlewareRequest<X> custom(HttpMethod method, URI uri) {
-        return new MiddlewareRequest<>(method, uri);
+    public static <X> MiddlewareRequest<X> custom(HttpMethod method, URI uri, RestTemplate template) {
+        return new MiddlewareRequest<>(method, uri, template);
     }
     //</editor-fold>
 
+    public MiddlewareRequest<T> template(RestTemplate template) {
+        this.template = template;
+        return this;
+    }
+
+    public MiddlewareRequest<T> requestAdapters(List<Consumer<MiddlewareRequest>> adapters) {
+        this.outgoingRequestAdapters = adapters;
+        return this;
+    }
+
     @Override
     public RestTemplate getRestTemplate() {
-        return restTemplate;
+        return template;
     }
 
     /**
@@ -230,14 +223,16 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
      */
     public MiddlewareRequest<T> callOutgoingRequestAdapters() {
         // Check if the outgoing adapters were already called once. If so, don't do it again.
-        if (this.outgoingRequestAdaptersCalled) {
+        if (outgoingRequestAdaptersCalled) {
             return this;
         }
 
         outgoingRequestAdaptersCalled = true;
 
-        for (var adapter : outgoingRequestAdapters) {
-            adapter.accept(this);
+        if (outgoingRequestAdapters != null) {
+            for (var adapter : outgoingRequestAdapters) {
+                adapter.accept(this);
+            }
         }
 
         return this;

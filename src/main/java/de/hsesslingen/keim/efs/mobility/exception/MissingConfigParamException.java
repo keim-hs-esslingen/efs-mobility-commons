@@ -21,33 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package de.hsesslingen.keim.efs.mobility.config;
-
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.web.client.ResponseErrorHandler;
-
-import de.hsesslingen.keim.efs.mobility.exception.handler.MiddlewareServiceExceptionHandler;
-import de.hsesslingen.keim.efs.mobility.exception.handler.MiddlewareErrorResponseHandler;
+package de.hsesslingen.keim.efs.mobility.exception;
 
 /**
- * @author k.sivarasah
- * 8 Oct 2019
+ *
+ * @author ben
  */
+public class MissingConfigParamException extends RuntimeException {
 
-@Configuration
-@AutoConfigureOrder(value = Ordered.HIGHEST_PRECEDENCE)
-public class MobilityCommonsAutoConfiguration {
+    public MissingConfigParamException(String paramKey) {
+        super("The required configuration parameter \"" + paramKey + "\" is missing.");
+    }
 
-	@Bean
-	public ResponseErrorHandler responseErrorHandler() {
-		return new MiddlewareErrorResponseHandler();
-	}
-	
-	@Bean
-	public MiddlewareServiceExceptionHandler efsExceptionHandler() {
-		return new MiddlewareServiceExceptionHandler();
-	}
 }

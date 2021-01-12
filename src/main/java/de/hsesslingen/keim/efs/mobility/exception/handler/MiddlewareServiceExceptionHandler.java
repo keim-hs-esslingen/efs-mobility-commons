@@ -65,10 +65,10 @@ import static org.springframework.http.HttpStatus.*;
  */
 @ControllerAdvice
 @ResponseBody
-public class EfsExceptionHandler extends ResponseEntityExceptionHandler {
+public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHandler {
 
     @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    private static final Logger logger = getLogger(EfsExceptionHandler.class);
+    private static final Logger logger = getLogger(MiddlewareServiceExceptionHandler.class);
 
     private static final String CAUGHT_MSG = "{} caught with message {}";
 
