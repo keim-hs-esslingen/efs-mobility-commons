@@ -21,14 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package de.hsesslingen.keim.efs.mobility.utils;
+package de.hsesslingen.keim.efs.mobility.requests;
+
+import de.hsesslingen.keim.efs.mobility.exception.handler.MiddlewareErrorResponseHandler;
 
 /**
+ * This request template sets an instance of
+ * {@link MiddlewareErrorResponseHandler} as error handler and is used by all
+ * internal beans that request stuff from services within the middleware.
  *
  * @author ben
  */
-public interface MiddlewareRequestAdapter {
+public final class DefaultRequestTemplate extends MiddlewareRequestTemplate {
 
-    public void adapt(MiddlewareRequest<?> request);
+    private final MiddlewareErrorResponseHandler errorHandler = new MiddlewareErrorResponseHandler();
 
+    public DefaultRequestTemplate() {
+        resetErrorHandler();
+    }
+
+    public void resetErrorHandler() {
+        this.setErrorHandler(errorHandler);
+    }
 }

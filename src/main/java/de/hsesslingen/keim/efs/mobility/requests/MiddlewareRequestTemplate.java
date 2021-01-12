@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package de.hsesslingen.keim.efs.mobility.utils;
+package de.hsesslingen.keim.efs.mobility.requests;
 
 import java.net.URI;
 import java.util.ArrayList;
