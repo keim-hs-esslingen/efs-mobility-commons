@@ -32,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -44,6 +45,7 @@ import lombok.experimental.Accessors;
  * @author b.oesch
  */
 @Data
+@NoArgsConstructor
 @Accessors(chain = true)
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder({"message", "code"})
