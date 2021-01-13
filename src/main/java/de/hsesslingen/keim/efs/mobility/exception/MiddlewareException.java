@@ -73,6 +73,18 @@ public class MiddlewareException extends RuntimeException {
         return new MiddlewareError(code, details, getMessage());
     }
 
+    private static String format(String format, Object... variables) {
+        return variables.length <= 0 ? format : String.format(format, variables);
+    }
+
+    public static MiddlewareException unknownException(String format, Object... variables) {
+        return unknownException(null, format, variables);
+    }
+
+    public static MiddlewareException unknownException(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareException(UNKNOWN_ERROR_CODE, details, format(format, variables));
+    }
+
     public static MiddlewareException tokenInvalidException() {
         return tokenInvalidException(REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE);
     }
@@ -82,8 +94,19 @@ public class MiddlewareException extends RuntimeException {
     }
 
     public static MiddlewareException tokenInvalidException(Map<String, Object> details, String format, Object... variables) {
-        var message = variables.length <= 0 ? format : String.format(format, variables);
-        return new MiddlewareException(TOKEN_INVALID_ERROR_CODE, details, message);
+        return new MiddlewareException(TOKEN_INVALID_ERROR_CODE, details, format(format, variables));
+    }
+
+    public static MiddlewareException remoteAuthenticationFailedException() {
+        return remoteAuthenticationFailedException(REMOTE_AUTHENTICATION_FAILED_ERROR_MESSAGE);
+    }
+
+    public static MiddlewareException remoteAuthenticationFailedException(String format, Object... variables) {
+        return remoteAuthenticationFailedException(null, format, variables);
+    }
+
+    public static MiddlewareException remoteAuthenticationFailedException(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareException(REMOTE_AUTHENTICATION_FAILED_ERROR_CODE, details, format(format, variables));
     }
 
     public static MiddlewareException remoteServiceUnavailableException() {
@@ -95,8 +118,19 @@ public class MiddlewareException extends RuntimeException {
     }
 
     public static MiddlewareException remoteServiceUnavailableException(Map<String, Object> details, String format, Object... variables) {
-        var message = variables.length <= 0 ? format : String.format(format, variables);
-        return new MiddlewareException(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, message);
+        return new MiddlewareException(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, format(format, variables));
+    }
+
+    public static MiddlewareException bookingActionNotSupportedException() {
+        return bookingActionNotSupportedException(BOOKING_ACTION_NOT_SUPPORTED_ERROR_MESSAGE);
+    }
+
+    public static MiddlewareException bookingActionNotSupportedException(String format, Object... variables) {
+        return bookingActionNotSupportedException(null, format, variables);
+    }
+
+    public static MiddlewareException bookingActionNotSupportedException(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareException(BOOKING_ACTION_NOT_SUPPORTED_ERROR_CODE, details, format(format, variables));
     }
 
 }

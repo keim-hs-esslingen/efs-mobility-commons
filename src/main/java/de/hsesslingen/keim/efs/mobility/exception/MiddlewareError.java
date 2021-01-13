@@ -54,15 +54,18 @@ public class MiddlewareError implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String UNKNOWN_ERROR_CODE = "UNKNOWN_ERROR";
-    
+
     public static final String TOKEN_INVALID_ERROR_CODE = "TOKEN_INVALID";
     public static final String TOKEN_INVALID_ERROR_MESSAGE = "The token you have provided is invalid.";
-    
+
     public static final String REMOTE_AUTHENTICATION_FAILED_ERROR_CODE = "REMOTE_AUTHENTICATION_FAILED";
     public static final String REMOTE_AUTHENTICATION_FAILED_ERROR_MESSAGE = "The authentication at a remote service failed.";
-    
+
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE = "REMOTE_SERVICE_UNAVAILABLE";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE = "A required remote service is unavailable.";
+
+    public static final String BOOKING_ACTION_NOT_SUPPORTED_ERROR_CODE = "BOOKING_ACTION_NOT_SUPPORTED";
+    public static final String BOOKING_ACTION_NOT_SUPPORTED_ERROR_MESSAGE = "The requested booking action is not supported.";
 
     /**
      * A human readable error message.
@@ -159,5 +162,17 @@ public class MiddlewareError implements Serializable {
 
     public static MiddlewareError remoteServiceUnavailable(Map<String, Object> details, String format, Object... variables) {
         return new MiddlewareError(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, format(format, variables));
+    }
+
+    public static MiddlewareError bookingActionNotSupported() {
+        return bookingActionNotSupported(BOOKING_ACTION_NOT_SUPPORTED_ERROR_MESSAGE);
+    }
+
+    public static MiddlewareError bookingActionNotSupported(String format, Object... variables) {
+        return bookingActionNotSupported(null, format, variables);
+    }
+
+    public static MiddlewareError bookingActionNotSupported(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareError(BOOKING_ACTION_NOT_SUPPORTED_ERROR_CODE, details, format(format, variables));
     }
 }

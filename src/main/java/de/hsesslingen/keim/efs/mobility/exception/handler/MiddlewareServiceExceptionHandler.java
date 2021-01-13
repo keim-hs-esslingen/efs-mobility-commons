@@ -86,6 +86,9 @@ public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHa
             case REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE:
                 httpStatus = BAD_GATEWAY;
                 break;
+            case BOOKING_ACTION_NOT_SUPPORTED_ERROR_CODE:
+                httpStatus = NOT_IMPLEMENTED;
+                break;
             default:
                 httpStatus = INTERNAL_SERVER_ERROR;
                 break;
