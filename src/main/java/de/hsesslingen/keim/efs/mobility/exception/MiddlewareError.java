@@ -55,6 +55,8 @@ public class MiddlewareError implements Serializable {
 
     public static final String TOKEN_INVALID_ERROR_CODE = "TOKEN_INVALID";
     public static final String TOKEN_INVALID_ERROR_MESSAGE = "The token you have provided is invalid.";
+    public static final String REMOTE_AUTHENTICATION_FAILED_ERROR_CODE = "REMOTE_AUTHENTICATION_FAILED";
+    public static final String REMOTE_AUTHENTICATION_FAILED_ERROR_MESSAGE = "The authentication at a remote service failed.";
     public static final String UNKNOWN_ERROR_CODE = "UNKNOWN_ERROR";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE = "REMOTE_SERVICE_UNAVAILABLE";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE = "The token you have provided is invalid.";
@@ -130,6 +132,18 @@ public class MiddlewareError implements Serializable {
 
     public static MiddlewareError tokenInvalid(Map<String, Object> details, String format, Object... variables) {
         return new MiddlewareError(TOKEN_INVALID_ERROR_CODE, details, format(format, variables));
+    }
+
+    public static MiddlewareError remoteAuthenticationFailed() {
+        return remoteAuthenticationFailed(REMOTE_AUTHENTICATION_FAILED_ERROR_MESSAGE);
+    }
+
+    public static MiddlewareError remoteAuthenticationFailed(String format, Object... variables) {
+        return remoteAuthenticationFailed(null, format, variables);
+    }
+
+    public static MiddlewareError remoteAuthenticationFailed(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareError(REMOTE_AUTHENTICATION_FAILED_ERROR_CODE, details, format(format, variables));
     }
 
     public static MiddlewareError remoteServiceUnavailable() {
