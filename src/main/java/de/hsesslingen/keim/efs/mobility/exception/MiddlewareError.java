@@ -55,6 +55,7 @@ public class MiddlewareError implements Serializable {
 
     public static final String TOKEN_INVALID_ERROR_CODE = "TOKEN_INVALID";
     public static final String TOKEN_INVALID_ERROR_MESSAGE = "The token you have provided is invalid.";
+    public static final String UNKNOWN_ERROR_CODE = "UNKNOWN_ERROR";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE = "REMOTE_SERVICE_UNAVAILABLE";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE = "The token you have provided is invalid.";
 
@@ -107,8 +108,20 @@ public class MiddlewareError implements Serializable {
         return new MiddlewareException(code, details, message);
     }
 
+    private static String format(String format, Object... variables) {
+        return variables.length <= 0 ? format : String.format(format, variables);
+    }
+
+    public static MiddlewareError unknown(String format, Object... variables) {
+        return unknown(null, format, variables);
+    }
+
+    public static MiddlewareError unknown(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareError(UNKNOWN_ERROR_CODE, details, format(format, variables));
+    }
+
     public static MiddlewareError tokenInvalid() {
-        return tokenInvalid(REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE);
+        return tokenInvalid(TOKEN_INVALID_ERROR_MESSAGE);
     }
 
     public static MiddlewareError tokenInvalid(String format, Object... variables) {
@@ -116,12 +129,11 @@ public class MiddlewareError implements Serializable {
     }
 
     public static MiddlewareError tokenInvalid(Map<String, Object> details, String format, Object... variables) {
-        var message = variables.length <= 0 ? format : String.format(format, variables);
-        return new MiddlewareError(TOKEN_INVALID_ERROR_CODE, details, message);
+        return new MiddlewareError(TOKEN_INVALID_ERROR_CODE, details, format(format, variables));
     }
 
     public static MiddlewareError remoteServiceUnavailable() {
-        return remoteServiceUnavailable(TOKEN_INVALID_ERROR_MESSAGE);
+        return remoteServiceUnavailable(REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE);
     }
 
     public static MiddlewareError remoteServiceUnavailable(String format, Object... variables) {
@@ -129,7 +141,6 @@ public class MiddlewareError implements Serializable {
     }
 
     public static MiddlewareError remoteServiceUnavailable(Map<String, Object> details, String format, Object... variables) {
-        var message = variables.length <= 0 ? format : String.format(format, variables);
-        return new MiddlewareError(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, message);
+        return new MiddlewareError(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, format(format, variables));
     }
 }
