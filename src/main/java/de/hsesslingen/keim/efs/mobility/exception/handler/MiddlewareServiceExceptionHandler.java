@@ -80,6 +80,7 @@ public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHa
 
         switch (e.getCode()) {
             case TOKEN_INVALID_ERROR_CODE:
+            case REMOTE_AUTHENTICATION_FAILED_ERROR_CODE:
                 httpStatus = UNAUTHORIZED;
                 break;
             case REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE:
