@@ -76,6 +76,13 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
      */
     private boolean isInternal = false;
 
+    public MiddlewareRequest() {
+    }
+    
+    public MiddlewareRequest(RestTemplate template) {
+        this.template = template;
+    }
+
     public MiddlewareRequest(HttpMethod method, String uri, RestTemplate template) {
         super(method, uri);
         this.template = template;
@@ -290,11 +297,21 @@ public class MiddlewareRequest<T> extends AbstractRequest<T> {
     }
 
     @Override
+    public MiddlewareRequest<T> method(HttpMethod method) {
+        return (MiddlewareRequest<T>) super.method(method);
+    }
+
+    @Override
     public ResponseEntity<T> go() {
         // Before we send the request, lets add our credentials...
         addCredentialsToHeader();
         callRequestAdapters();
         return super.go();
+    }
+
+    public ResponseEntity<T> go(RestTemplate template) {
+        this.template = template;
+        return this.go();
     }
 
     public MiddlewareRequest<T> toInternal() {

@@ -80,7 +80,6 @@ public abstract class MiddlewareRequestTemplate {
         return this;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Static factory methods for easy creation.">
     public MiddlewareRequest<?> get(String uri) {
         return new MiddlewareRequest<>(GET, uri, getRestTemplate()).requestAdapters(requestAdapters);
     }
@@ -120,6 +119,12 @@ public abstract class MiddlewareRequestTemplate {
     public MiddlewareRequest<?> custom(HttpMethod method, URI uri) {
         return new MiddlewareRequest<>(method, uri, getRestTemplate()).requestAdapters(requestAdapters);
     }
-    //</editor-fold>
 
+    public MiddlewareRequest<?> method(HttpMethod method) {
+        return new MiddlewareRequest(getRestTemplate()).method(method);
+    }
+
+    public MiddlewareRequest<?> createRequest() {
+        return new MiddlewareRequest(getRestTemplate());
+    }
 }
