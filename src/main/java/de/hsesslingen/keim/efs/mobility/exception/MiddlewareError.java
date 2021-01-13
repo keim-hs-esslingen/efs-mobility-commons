@@ -59,7 +59,7 @@ public class MiddlewareError implements Serializable {
     public static final String REMOTE_AUTHENTICATION_FAILED_ERROR_MESSAGE = "The authentication at a remote service failed.";
     public static final String UNKNOWN_ERROR_CODE = "UNKNOWN_ERROR";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE = "REMOTE_SERVICE_UNAVAILABLE";
-    public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE = "The token you have provided is invalid.";
+    public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE = "A required remote service is unavailable.";
 
     /**
      * A human readable error message.
