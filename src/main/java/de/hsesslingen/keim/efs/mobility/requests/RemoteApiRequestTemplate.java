@@ -26,11 +26,13 @@ package de.hsesslingen.keim.efs.mobility.requests;
 import de.hsesslingen.keim.efs.mobility.exception.MiddlewareError;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.Scanner;
 import org.slf4j.Logger;
 import static org.slf4j.LoggerFactory.getLogger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.lang.Nullable;
 import org.springframework.web.client.ResponseErrorHandler;
 
 /**
@@ -55,18 +57,26 @@ public abstract class RemoteApiRequestTemplate extends MiddlewareRequestTemplate
             public final void handleError(ClientHttpResponse response) throws IOException {
                 HttpStatus httpStatus = response.getStatusCode();
 
-                String responseBody;
+                String responseBody = null;
 
                 try ( var scanner = new Scanner(response.getBody(), Charset.forName("UTF-8").name())) {
                     responseBody = scanner.useDelimiter("\\A").next();
+                } catch (Exception ex) {
+                    // Simply catch and do nothing. responseBody will be null.
                 }
 
                 // parseError is used inside error handler within constructor. This might lead to a leaking this-reference.
-                MiddlewareError error = parseError(responseBody, httpStatus, response);
+                var error = parseError(responseBody, httpStatus, response);
 
                 if (error == null) {
+                    Map<String, Object> details = null;
+
+                    if (responseBody != null) {
+                        details = Map.of("Remote Error Message", responseBody);
+                    }
+
                     // Fallback.
-                    error = new MiddlewareError(httpStatus.value(), responseBody);
+                    error = MiddlewareError.unknown(details, "An unknown error occured.");
                 }
 
                 logger.error("Error Response: {}", responseBody);
@@ -76,6 +86,6 @@ public abstract class RemoteApiRequestTemplate extends MiddlewareRequestTemplate
         });
     }
 
-    protected abstract MiddlewareError parseError(String responseBody, HttpStatus statusCode, ClientHttpResponse response);
+    protected abstract MiddlewareError parseError(@Nullable String responseBody, HttpStatus statusCode, ClientHttpResponse response);
 
 }
