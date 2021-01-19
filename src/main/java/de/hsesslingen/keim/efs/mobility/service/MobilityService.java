@@ -116,7 +116,9 @@ public class MobilityService implements Serializable {
         ASSETS_API,
         OPTIONS_API,
         BOOKING_API,
+        @Deprecated(forRemoval = true) // Remove in future version. Replaced by TOKENS_API
         CREDENTIALS_API,
+        TOKENS_API,
         USERS_API
     }
 
