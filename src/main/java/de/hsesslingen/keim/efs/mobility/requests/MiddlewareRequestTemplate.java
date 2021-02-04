@@ -35,27 +35,29 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author ben
  */
-public abstract class MiddlewareRequestTemplate {
+public class MiddlewareRequestTemplate {
 
     private RestTemplate restTemplate;
     private List<MiddlewareRequestAdapter> requestAdapters;
 
     /**
-     * This adds the given adapter to the list of request adapters. These
+     * This adds the given adapter to the list of request adapters.These
      * adapters are called before a request is sent off to be able to add or
-     * change information.
-     * <p>
+     * change information.<p>
      * An adapter can even throw an exception to intercept the sending of the
      * request.
      *
      * @param adapter
+     * @return
      */
-    public void addRequestAdapter(MiddlewareRequestAdapter adapter) {
+    public MiddlewareRequestTemplate addRequestAdapter(MiddlewareRequestAdapter adapter) {
         if (this.requestAdapters == null) {
             this.requestAdapters = new ArrayList<>();
         }
 
         requestAdapters.add(adapter);
+
+        return this;
     }
 
     public RestTemplate getRestTemplate() {

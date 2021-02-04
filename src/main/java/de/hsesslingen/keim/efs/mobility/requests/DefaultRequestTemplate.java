@@ -24,6 +24,7 @@
 package de.hsesslingen.keim.efs.mobility.requests;
 
 import de.hsesslingen.keim.efs.mobility.exception.handler.MiddlewareErrorResponseHandler;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * This request template sets an instance of
@@ -42,5 +43,12 @@ public final class DefaultRequestTemplate extends MiddlewareRequestTemplate {
 
     public void resetErrorHandler() {
         this.setErrorHandler(errorHandler);
+    }
+
+    @Override
+    public DefaultRequestTemplate setRestTemplate(RestTemplate value) {
+        super.setRestTemplate(value);
+        this.resetErrorHandler();
+        return this;
     }
 }
