@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-de.hsesslingen.keim.efs.mobility.config.MobilityCommonsAutoConfiguration,\
-de.hsesslingen.keim.efs.mobility.requests.DefaultRequestTemplate
+de.hsesslingen.keim.efs.mobility.config.MobilityCommonsAutoConfiguration
