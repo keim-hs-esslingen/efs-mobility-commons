@@ -86,7 +86,7 @@ public class MiddlewareException extends RuntimeException {
     }
 
     public static MiddlewareException tokenInvalidException() {
-        return tokenInvalidException(REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE);
+        return tokenInvalidException(TOKEN_INVALID_ERROR_MESSAGE);
     }
 
     public static MiddlewareException tokenInvalidException(String format, Object... variables) {
@@ -110,7 +110,7 @@ public class MiddlewareException extends RuntimeException {
     }
 
     public static MiddlewareException remoteServiceUnavailableException() {
-        return remoteServiceUnavailableException(TOKEN_INVALID_ERROR_MESSAGE);
+        return remoteServiceUnavailableException(REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE);
     }
 
     public static MiddlewareException remoteServiceUnavailableException(String format, Object... variables) {
@@ -119,6 +119,18 @@ public class MiddlewareException extends RuntimeException {
 
     public static MiddlewareException remoteServiceUnavailableException(Map<String, Object> details, String format, Object... variables) {
         return new MiddlewareException(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, format(format, variables));
+    }
+
+    public static MiddlewareException remoteServiceRequestFailedException() {
+        return remoteServiceRequestFailedException(REMOTE_SERVICE_REQUEST_FAILED_ERROR_MESSAGE);
+    }
+
+    public static MiddlewareException remoteServiceRequestFailedException(String format, Object... variables) {
+        return remoteServiceRequestFailedException(null, format, variables);
+    }
+
+    public static MiddlewareException remoteServiceRequestFailedException(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareException(REMOTE_SERVICE_REQUEST_FAILED_ERROR_CODE, details, format(format, variables));
     }
 
     public static MiddlewareException bookingActionNotSupportedException() {

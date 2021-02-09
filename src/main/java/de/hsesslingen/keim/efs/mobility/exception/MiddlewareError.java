@@ -63,6 +63,9 @@ public class MiddlewareError implements Serializable {
 
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE = "REMOTE_SERVICE_UNAVAILABLE";
     public static final String REMOTE_SERVICE_UNAVAILABLE_ERROR_MESSAGE = "A required remote service is unavailable.";
+    
+    public static final String REMOTE_SERVICE_REQUEST_FAILED_ERROR_CODE = "REMOTE_SERVICE_REQUEST_FAILED";
+    public static final String REMOTE_SERVICE_REQUEST_FAILED_ERROR_MESSAGE = "A request to a remote service failed.";
 
     public static final String BOOKING_ACTION_NOT_SUPPORTED_ERROR_CODE = "BOOKING_ACTION_NOT_SUPPORTED";
     public static final String BOOKING_ACTION_NOT_SUPPORTED_ERROR_MESSAGE = "The requested booking action is not supported.";
@@ -162,6 +165,18 @@ public class MiddlewareError implements Serializable {
 
     public static MiddlewareError remoteServiceUnavailable(Map<String, Object> details, String format, Object... variables) {
         return new MiddlewareError(REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE, details, format(format, variables));
+    }
+
+    public static MiddlewareError remoteServiceRequestFailed() {
+        return remoteServiceRequestFailed(REMOTE_SERVICE_REQUEST_FAILED_ERROR_MESSAGE);
+    }
+
+    public static MiddlewareError remoteServiceRequestFailed(String format, Object... variables) {
+        return remoteServiceRequestFailed(null, format, variables);
+    }
+
+    public static MiddlewareError remoteServiceRequestFailed(Map<String, Object> details, String format, Object... variables) {
+        return new MiddlewareError(REMOTE_SERVICE_REQUEST_FAILED_ERROR_CODE, details, format(format, variables));
     }
 
     public static MiddlewareError bookingActionNotSupported() {
