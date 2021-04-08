@@ -52,6 +52,7 @@ import de.hsesslingen.keim.efs.mobility.exception.HttpException;
 import de.hsesslingen.keim.efs.mobility.exception.MiddlewareError;
 import static de.hsesslingen.keim.efs.mobility.exception.MiddlewareError.*;
 import de.hsesslingen.keim.efs.mobility.exception.MiddlewareException;
+import static java.lang.Integer.parseInt;
 import static java.util.stream.Collectors.toMap;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.*;
@@ -72,6 +73,14 @@ public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHa
 
     private static final String CAUGHT_MSG = "{} caught with message {}";
 
+    private HttpStatus tryParseHttpStatusFromExceptionCode(String middlewareExceptionCode, HttpStatus fallback) {
+        try {
+            return HttpStatus.valueOf(parseInt(middlewareExceptionCode));
+        } catch (Exception ex) {
+            return fallback;
+        }
+    }
+
     @ExceptionHandler(MiddlewareException.class)
     public ResponseEntity<MiddlewareError> handleMiddlewareException(MiddlewareException e) {
         logger.error(CAUGHT_MSG, e.getClass().getSimpleName(), e.getMessage(), e);
@@ -91,11 +100,9 @@ public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHa
                 httpStatus = NOT_IMPLEMENTED;
                 break;
             default:
-                httpStatus = INTERNAL_SERVER_ERROR;
+                httpStatus = tryParseHttpStatusFromExceptionCode(e.getCode(), INTERNAL_SERVER_ERROR);
                 break;
         }
-        
-        
 
         return new ResponseEntity<>(e.toError(), httpStatus);
     }
