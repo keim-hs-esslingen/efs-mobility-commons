@@ -83,6 +83,7 @@ public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHa
             case REMOTE_AUTHENTICATION_FAILED_ERROR_CODE:
                 httpStatus = UNAUTHORIZED;
                 break;
+            case "503": // Service-Unavailable HTTP status code.
             case REMOTE_SERVICE_UNAVAILABLE_ERROR_CODE:
                 httpStatus = BAD_GATEWAY;
                 break;
@@ -93,6 +94,8 @@ public class MiddlewareServiceExceptionHandler extends ResponseEntityExceptionHa
                 httpStatus = INTERNAL_SERVER_ERROR;
                 break;
         }
+        
+        
 
         return new ResponseEntity<>(e.toError(), httpStatus);
     }
