@@ -37,8 +37,9 @@ public final class DefaultRequestTemplate extends MiddlewareRequestTemplate {
 
     private final MiddlewareErrorResponseHandler errorHandler = new MiddlewareErrorResponseHandler();
 
-    public DefaultRequestTemplate() {
-        resetErrorHandler();
+    public DefaultRequestTemplate(RestTemplate value) {
+        super.setRestTemplate(value);
+        this.resetErrorHandler();
     }
 
     public void resetErrorHandler() {
